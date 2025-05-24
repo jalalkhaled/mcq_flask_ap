@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Results</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Your Results</h1>
+    <table>
+      <thead>
+        <tr><th>Question</th><th>Your Answer</th><th>Correct Answer</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        {% for q in questions %}
+        <tr>
+          <td>{{ q.text }}</td>
+          {% set ua = user_answers.get(q.id) %}
+          {% if ua is not none %}
+            <td>{{ q.options[ua] }}</td>
+            <td>{{ q.options[q.answer] }}</td>
+            <td>{{ 1 if ua == q.answer else 0 }}</td>
+          {% else %}
+            <td>No answer</td>
+            <td>{{ q.options[q.answer] }}</td>
+            <td>0</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p>Total Score: {{ score }}/{{ total }}</p>
+    <p>Percentage: {{ percentage }}%</p>
+  </div>
+</body>
+</html>

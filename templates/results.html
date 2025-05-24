@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Submissions</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>All Results</h1>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Timestamp</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        {% for sub in submissions %}
+        <tr>
+          <td>{{ sub.name }}</td>
+          <td>{{ sub.timestamp }}</td>
+          <td>{{ sub.score }}/{{ questions|length }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
