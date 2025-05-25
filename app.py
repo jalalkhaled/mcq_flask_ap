@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import datetime
 import json
+import os
 
 app = Flask(__name__)
 
@@ -8,8 +9,15 @@ app = Flask(__name__)
 with open('questions.json') as f:
     QUESTIONS = json.load(f)
 
-# In-memory store of submissions
-submissions = []
+# Path for saved submissions
+RESULTS_FILE = 'results.json'
+
+# Load existing submissions if available
+if os.path.exists(RESULTS_FILE):
+    with open(RESULTS_FILE, 'r') as f:
+        submissions = json.load(f)
+else:
+    submissions = []
 
 @app.route('/')
 def quiz():
@@ -19,6 +27,11 @@ def quiz():
 def submit():
     data = request.get_json()
     submissions.append(data)
+
+    # Save submissions to file
+    with open(RESULTS_FILE, 'w') as f:
+        json.dump(submissions, f, indent=2)
+
     return jsonify(status='ok', redirect=f"/myresults?name={data['name']}")
 
 @app.route('/myresults')
